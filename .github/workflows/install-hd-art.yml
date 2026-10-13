@@ -1,0 +1,46 @@
+name: Install HD reel artwork
+on:
+  workflow_dispatch:
+    inputs:
+      zip_url:
+        description: "Direct HTTPS URL to the HD sprite ZIP (e.g. GitHub issue attachment)"
+        required: true
+        type: string
+permissions:
+  contents: write
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download and validate artwork
+        env:
+          ZIP_URL: ${{ inputs.zip_url }}
+        run: |
+          set -euo pipefail
+          case "$ZIP_URL" in https://*) ;; *) echo "HTTPS URL required"; exit 1;; esac
+          curl -fL --retry 3 --max-time 120 --output /tmp/sprites.zip "$ZIP_URL"
+          python3 - <<'PY'
+          import io,zipfile,pathlib,shutil
+          z=zipfile.ZipFile('/tmp/sprites.zip')
+          names={pathlib.PurePosixPath(n).name:n for n in z.namelist() if not n.endswith('/')}
+          target=pathlib.Path('assets/hd');target.mkdir(parents=True,exist_ok=True)
+          required=('miner','mine','cart','tools','scatter','A','K','Q','J','ten')
+          for symbol in required:
+              filename=symbol+'.png'
+              if filename not in names:raise ValueError('Missing '+filename)
+              data=z.read(names[filename])
+              if not data.startswith(b'\x89PNG\r\n\x1a\n'):raise ValueError('Invalid PNG: '+filename)
+              (target/filename).write_bytes(data)
+              print('Installed',filename,len(data),'bytes')
+          if 'nine.png' in names:
+              (target/'nine.png').write_bytes(z.read(names['nine.png']))
+          PY
+      - name: Commit artwork
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/hd/
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "art: install HD illustrated reel sprites"
+          git push
