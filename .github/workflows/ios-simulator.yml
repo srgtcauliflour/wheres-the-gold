@@ -1,0 +1,23 @@
+name: iOS Simulator Build
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'ios/**'
+      - 'index.html'
+      - 'assets/**'
+      - '.github/workflows/ios-simulator.yml'
+jobs:
+  simulator:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Package offline web game
+        run: bash ios/scripts/prepare-web.sh
+      - name: Generate Xcode project
+        run: cd ios && xcodegen generate
+      - name: Compile iOS simulator app
+        run: |
+          xcodebuild -project ios/Last20GoldRush.xcodeproj -scheme Last20GoldRush -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
