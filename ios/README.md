@@ -1,4 +1,4 @@
-# Last $20 Gold Rush — iPhone edition
+# My Last 20 Bucks — iPhone edition
 
 This is a native SwiftUI iPhone shell embedding a **locally packaged** copy of the existing game in WKWebView. It does not connect to the live GitHub Pages website during play.
 
