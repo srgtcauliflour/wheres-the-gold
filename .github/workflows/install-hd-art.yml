@@ -24,26 +24,29 @@ jobs:
           case "$ZIP_URL" in https://*) ;; *) echo "HTTPS URL required"; exit 1;; esac
           curl -fL --retry 3 --max-time 120 --output /tmp/sprites.zip "$ZIP_URL"
           python3 - <<'PY'
-          import io,zipfile,pathlib,shutil
+          import zipfile,pathlib
           z=zipfile.ZipFile('/tmp/sprites.zip')
-          names={pathlib.PurePosixPath(n).name:n for n in z.namelist() if not n.endswith('/')}
-          target=pathlib.Path('assets/hd');target.mkdir(parents=True,exist_ok=True)
-          required=('miner','mine','cart','tools','scatter','A','K','Q','J','ten')
-          for symbol in required:
-              filename=symbol+'.png'
-              if filename not in names:raise ValueError('Missing '+filename)
-              data=z.read(names[filename])
-              if not data.startswith(b'\x89PNG\r\n\x1a\n'):raise ValueError('Invalid PNG: '+filename)
-              (target/filename).write_bytes(data)
-              print('Installed',filename,len(data),'bytes')
-          if 'nine.png' in names:
-              (target/'nine.png').write_bytes(z.read(names['nine.png']))
-          PY
-      - name: Commit artwork
+          required={'miner','mine','cart','tools','scatter','A','K','Q','J','ten','nine'}
+          members={}
+          for name in z.namelist():
+              p=pathlib.PurePosixPath(name)
+              if p.is_absolute() or '..' in p.parts: raise ValueError('Unsafe path')
+              if name.endswith('/'):continue
+              if len(p.parts)!=3 or p.parts[0]!='assets' or p.parts[1] not in ('hd','bonus','theme') or p.suffix!='.png':continue
+              data=z.read(name)
+              if not data.startswith(b'\\x89PNG\\r\\n\\x1a\\n'):raise ValueError('Invalid PNG '+name)
+              members[name]=data
+          if not required.issubset({pathlib.PurePosixPath(n).stem for n in members if n.startswith('assets/hd/')}):
+              raise ValueError('Complete HD symbols including 9 required')
+          if len([n for n in members if n.startswith('assets/bonus/')])<7:raise ValueError('Seven bonus portraits required')
+          for name,data in members.items():
+              p=pathlib.Path(name);p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(data)
+              print('Installed',name,len(data),'bytes')
+          PY     - name: Commit artwork
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/hd/
+          git add assets/hd/ assets/bonus/ assets/theme/
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
-          git commit -m "art: install HD illustrated reel sprites"
+          git commit -m "art: install complete illustrated game and bonus artwork"
           git push
