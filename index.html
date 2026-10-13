@@ -58,7 +58,7 @@ const letterColours={A:['#ef49c9','#7c0c74'],K:['#f45432','#8a1916'],Q:['#ffd14c
 function svgSymbol(sym){let body=art[sym];if(!body){const [top,bottom]=letterColours[sym]||['#e9a638','#7c3c0a'];const label=sym==='ten'?'10':sym==='nine'?'9':sym;body='<defs><linearGradient id="letter" x2="0" y2="1"><stop stop-color="'+top+'"/><stop offset="1" stop-color="'+bottom+'"/></linearGradient></defs><text x="50" y="72" font-size="'+(label.length>1?62:80)+'" font-family="Georgia,serif" font-weight="900" text-anchor="middle" stroke="#54310d" stroke-width="6" fill="url(#letter)">'+label+'</text>'}return '<svg class="symbol-art" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'+body+'</svg>'}
 function setSymbol(node,sym){const img=document.createElement('img');img.className='symbol-art';img.src='assets/hd/'+sym+'.png';img.alt='';img.draggable=false;img.onerror=()=>{if(['miner','cart','mine','scatter','tools','nine'].includes(sym)){img.onerror=null;img.src='assets/symbols/'+sym+'.svg'}else node.innerHTML=svgSymbol(sym)};node.replaceChildren(img);node.title=wilds.includes(sym)?'Golden wild '+sym:sym}
 const normal=Object.keys(icons).filter(s=>s!=='scatter');
-const weights={miner:2,mine:3,cart:4,tools:4,A:7,K:7,Q:7,J:8,ten:9,nine:9,scatter:3};
+const weights={miner:20,mine:30,cart:40,tools:40,A:80,K:80,Q:70,J:80,ten:90,nine:90,scatter:33};
 const payout={miner:[0,4,100,200,1000],mine:[0,2,80,150,500],cart:[0,0,50,100,300],tools:[0,0,50,100,300],A:[0,0,15,30,100],K:[0,0,12,25,80],Q:[0,0,10,20,70],J:[0,0,8,18,60],ten:[0,0,5,15,50],nine:[0,0,5,12,40]};
 const paths=[
 [1,1,1,1,1],[0,0,0,0,0],[2,2,2,2,2],[0,1,2,1,0],[2,1,0,1,2],
