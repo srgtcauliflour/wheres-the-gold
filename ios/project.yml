@@ -27,7 +27,7 @@ targets:
     info:
       path: Sources/Info.plist
       properties:
-        CFBundleDisplayName: "Last $20 Gold Rush"
+        CFBundleDisplayName: "My Last 20 Bucks"
         LSRequiresIPhoneOS: true
         UIStatusBarHidden: true
         UISupportedInterfaceOrientations:
