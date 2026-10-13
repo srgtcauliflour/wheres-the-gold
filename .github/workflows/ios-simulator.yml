@@ -1,4 +1,4 @@
-name: iOS Simulator Build
+name: iOS Builds (Simulator + iPhone IPA)
 on:
   workflow_dispatch:
   push:
@@ -8,16 +8,37 @@ on:
       - 'assets/**'
       - '.github/workflows/ios-simulator.yml'
 jobs:
-  simulator:
+  build:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
       - name: Install XcodeGen
         run: brew install xcodegen
-      - name: Package offline web game
+      - name: Package offline game
         run: bash ios/scripts/prepare-web.sh
       - name: Generate Xcode project
         run: cd ios && xcodegen generate
-      - name: Compile iOS simulator app
+      - name: Compile simulator app
         run: |
-          xcodebuild -project ios/Last20GoldRush.xcodeproj -scheme Last20GoldRush -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
+          xcodebuild -project ios/Last20GoldRush.xcodeproj -scheme Last20GoldRush -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath build/simulator CODE_SIGNING_ALLOWED=NO build
+      - name: Compile iPhone app (unsigned)
+        run: |
+          xcodebuild -project ios/Last20GoldRush.xcodeproj -scheme Last20GoldRush -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build/device CODE_SIGNING_ALLOWED=NO build
+      - name: Package unsigned IPA for later signing
+        run: |
+          mkdir -p output/Payload
+          cp -R build/device/Build/Products/Release-iphoneos/Last20GoldRush.app output/Payload/
+          cd output
+          zip -qry MyLast20Bucks-UNSIGNED.ipa Payload
+      - name: Upload unsigned IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: MyLast20Bucks-unsigned-iphone-ipa
+          path: output/MyLast20Bucks-UNSIGNED.ipa
+          retention-days: 30
+      - name: Upload simulator app
+        uses: actions/upload-artifact@v4
+        with:
+          name: MyLast20Bucks-simulator-app
+          path: build/simulator/Build/Products/Debug-iphonesimulator/Last20GoldRush.app
+          retention-days: 14
