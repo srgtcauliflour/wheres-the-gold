@@ -89,7 +89,7 @@ async function animateReels(target){
   viewport.classList.add('reel-stopped');
   setTimeout(()=>viewport.classList.remove('reel-stopped'),230);
   tone(310+col*65,.095);
- })
+ }));
 }
 function evaluate(){if(lockedBonusSymbols.length){for(const lock of lockedBonusSymbols)grid[lock.col][lock.row]=lock.sym}const bet=Number(el('bet').value),active=Number(el('lines').value),hits=[];let total=0;for(const path of paths.slice(0,active)){let best=0,bestHit=[];for(const s of normal){let n=0;while(n<5&&(grid[n][path[n]]===s||wilds.includes(grid[n][path[n]])))n++;let prize=(payout[s][n-1]||0)*bet;if(prize>best){best=prize;bestHit=Array.from({length:n},(_,i)=>[i,path[i]])}}total+=best;if(best)hits.push(...bestHit)}const scatters=grid.flat().filter(s=>s==='scatter').length;if(scatters>=3){total+=({3:2,4:10,5:50}[Math.min(scatters,5)]||0)*active*bet;bonusQueue++}return {total,hits,scatters}}
 // Free-game reels use a distinct mining-heavy symbol distribution. Locked tiles are
