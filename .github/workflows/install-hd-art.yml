@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Download and validate artwork
         env:
-          ZIP_URL: ${{ inputs.zip_url || 'https://github.com/user-attachments/files/33362428/wheres-the-gold-hd-repo-assets.zip' }}
+          ZIP_URL: ${{ inputs.zip_url || 'https://github.com/user-attachments/files/33362783/wheres-the-gold-complete-art-pack.zip' }}
         run: |
           set -euo pipefail
           case "$ZIP_URL" in https://*) ;; *) echo "HTTPS URL required"; exit 1;; esac
