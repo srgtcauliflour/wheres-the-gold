@@ -99,6 +99,17 @@ body{background:radial-gradient(ellipse at 50% -25%,#734821 0%,#24170f 40%,#0806
  .mobile-menu .denom-button{min-height:30px!important}
 }
 @media(min-width:651px){.mobile-menu{display:contents!important}.mobile-menu-heading{display:none!important}}
+
+/* Fix iPhone reel board collapsing to a narrow strip in Safari flex sizing. */
+@media(max-width:650px){
+ .reel-scene,.reel-machine,.reel-display,#reels{width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important}
+ .reel-machine{margin:0!important;display:block!important;position:relative!important;flex:1 1 auto!important;min-height:0!important}
+ .reel-display{display:block!important;position:absolute!important;inset:0!important;height:100%!important}
+ #reels.reels{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;grid-template-rows:minmax(0,1fr)!important;align-items:stretch!important;height:100%!important;min-height:0!important;gap:2px!important;padding:2px!important}
+ #reels .reel-column{display:block!important;min-width:0!important;width:100%!important;height:100%!important;overflow:hidden!important}
+ #reels .reel-strip{width:100%!important;height:100%!important;display:flex!important;flex-direction:column!important}
+ #reels .reel-strip .cell{height:33.333333%!important;flex:0 0 33.333333%!important;min-height:0!important}
+}
 </style>
 <main class="wrap"><nav class="mobile-toolbar" aria-label="Game navigation"><span class="mobile-brand">MY LAST 20 BUCKS</span><button type="button" id="mobile-menu-toggle" aria-controls="mobile-menu" aria-expanded="false">☰ MENU</button></nav><header class="game-header"><div class="brand-title"><span class="brand-kicker">THIS IS MY LAST $20 — CAN I GET RICH?</span><h1>MY LAST <em>20 BUCKS</em></h1><span class="brand-caption">START WITH $20 • CHASE YOUR PERSONAL BEST</span></div></header>
 <section class="panel game-cabinet"><div class="cabinet-stats"><div class="cabinet-stat">BALANCE <b id="credits">$20.00</b></div><div class="cabinet-stat">TOTAL BET <b id="total-bet">$0.25</b></div><div class="cabinet-stat">WIN <b id="win">$0.00</b></div><div class="cabinet-stat extra-stat">FREE GAMES <b id="free">0</b></div></div>
