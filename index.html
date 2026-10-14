@@ -158,6 +158,27 @@ body{background:radial-gradient(ellipse at 50% -25%,#734821 0%,#24170f 40%,#0806
  .cabinet-footer{flex:0 0 auto!important;padding:1px!important}
  .wrap>p,.wrap>details,.wrap>.challenge-leaderboard{display:none!important}
 }
+
+/* Mobile layout v0.1.5: explicit viewport/reel measurements, no percentage-height flex chain. */
+@media(max-width:650px){
+ html,body{position:static!important;display:block!important;width:100%!important;height:var(--game-viewport,100dvh)!important;min-height:0!important;overflow:hidden!important}
+ .wrap{position:fixed!important;top:0!important;left:0!important;right:0!important;bottom:auto!important;width:100%!important;height:var(--game-viewport,100dvh)!important;max-height:var(--game-viewport,100dvh)!important;padding:0 5px max(5px,env(safe-area-inset-bottom,0px))!important;display:flex!important;flex-direction:column!important}
+ .game-cabinet{flex:1 1 auto!important;height:auto!important;min-height:0!important;display:grid!important;grid-template-columns:minmax(0,1fr)!important;grid-template-rows:auto minmax(0,1fr) auto auto auto auto!important;align-content:stretch!important;overflow:hidden!important}
+ .cabinet-stats{grid-row:1!important;min-height:0!important}
+ .reel-scene{grid-row:2!important;height:100%!important;min-height:0!important;display:grid!important;grid-template-rows:auto minmax(0,1fr)!important;overflow:hidden!important}
+ #feature-banner{grid-row:1!important}
+ .reel-machine{grid-row:2!important;position:relative!important;width:100%!important;height:100%!important;min-height:0!important;max-height:none!important;display:block!important}
+ .reel-display{position:absolute!important;inset:0!important;width:100%!important;height:100%!important}
+ #reels.reels{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;grid-template-rows:minmax(0,1fr)!important}
+ #reels .reel-column{height:100%!important;min-height:0!important}
+ #reels .reel-strip{height:100%!important}
+ #reels .reel-strip .cell{height:33.333333%!important;flex-basis:33.333333%!important}
+ #message{grid-row:3!important}
+ .mobile-bet-controls{grid-row:4!important}
+ #mobile-spin{grid-row:5!important}
+ .cabinet-footer{grid-row:6!important}
+ .wrap>p,.wrap>details,.wrap>.challenge-leaderboard{display:none!important}
+}
 </style>
 <main class="wrap"><nav class="mobile-toolbar" aria-label="Game navigation"><span class="mobile-brand">MY LAST 20 BUCKS</span><button type="button" id="mobile-menu-toggle" aria-controls="mobile-menu" aria-expanded="false">☰ MENU</button></nav><header class="game-header"><div class="brand-title"><span class="brand-kicker">THIS IS MY LAST $20 — CAN I GET RICH?</span><h1>MY LAST <em>20 BUCKS</em></h1><span class="brand-caption">START WITH $20 • CHASE YOUR PERSONAL BEST</span></div></header>
 <section class="panel game-cabinet"><div class="cabinet-stats"><div class="cabinet-stat">BALANCE <b id="credits">$20.00</b></div><div class="cabinet-stat">TOTAL BET <b id="total-bet">$0.25</b></div><div class="cabinet-stat">WIN <b id="win">$0.00</b></div><div class="cabinet-stat extra-stat">FREE GAMES <b id="free">0</b></div></div>
@@ -285,5 +306,17 @@ el('player-form').addEventListener('submit',event=>{event.preventDefault();const
 (function(){const openBtn=document.getElementById('mobile-menu-toggle'),closeBtn=document.getElementById('mobile-menu-close'),drawer=document.getElementById('mobile-menu');if(!openBtn||!drawer)return;function setOpen(open){drawer.classList.toggle('is-open',open);drawer.inert=!open&&window.matchMedia('(max-width:650px)').matches;openBtn.setAttribute('aria-expanded',String(open));if(open)closeBtn.focus();else openBtn.focus()}document.getElementById('mobile-spin')?.addEventListener('click',()=>document.getElementById('spin').click());openBtn.addEventListener('click',()=>setOpen(true));closeBtn.addEventListener('click',()=>setOpen(false));document.addEventListener('keydown',e=>{if(e.key==='Escape'&&drawer.classList.contains('is-open'))setOpen(false)})})();
 
 
+
+(function(){
+ function sizeGame(){
+  if(!window.matchMedia('(max-width:650px)').matches)return;
+  const h=window.visualViewport?window.visualViewport.height:window.innerHeight;
+  if(h>300)document.documentElement.style.setProperty('--game-viewport',Math.round(h)+'px');
+ }
+ sizeGame();
+ window.addEventListener('resize',sizeGame);
+ window.visualViewport?.addEventListener('resize',sizeGame);
+ window.addEventListener('pageshow',sizeGame);
+})();
 showLeaderboard();resetRun();try{const saved=localStorage.getItem(playerIdentityKey);if(saved&&saved.length>=2&&saved.length<=20)playerName=saved}catch(e){}showPlayerGate();if(playerName){el('message').textContent='Welcome back, '+playerName+'! Your new $20 challenge is ready.';render();updateCabinet()}
 </script></html>
