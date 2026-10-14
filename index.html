@@ -57,7 +57,7 @@ body{background:radial-gradient(ellipse at 50% -25%,#734821 0%,#24170f 40%,#0806
  .mobile-menu{display:none;position:fixed;z-index:120;inset:0 0 0 auto;width:min(92vw,380px);height:100dvh;overflow-y:auto;overscroll-behavior:contain;padding:calc(env(safe-area-inset-top,0px) + 15px) 14px calc(env(safe-area-inset-bottom,0px) + 24px);background:linear-gradient(145deg,#42241b,#140d12 65%);border-left:4px ridge #e0ad55;box-shadow:-30px 0 70px #000c}
  .mobile-menu.is-open{display:block}.mobile-menu-heading{display:flex;align-items:center;justify-content:space-between;font:bold 19px Georgia;color:#ffe29a;margin:0 0 18px}
  .mobile-menu .denom-selector{display:block!important;margin:0 0 18px!important;padding:12px 6px!important}.mobile-menu .denom-options{display:flex!important;flex-wrap:wrap!important;gap:6px!important}.mobile-menu .denom-button{min-width:50px!important}
- .mobile-menu .control-cluster,.mobile-menu .secondary-controls{display:flex!important;flex-wrap:wrap!important;gap:12px!important;justify-content:center!important}.mobile-menu .control-cluster label,.mobile-menu .secondary-controls label{min-width:120px}
+ .mobile-menu .secondary-controls{display:flex!important;flex-wrap:wrap!important;gap:12px!important;justify-content:center!important}.mobile-menu .control-cluster label,.mobile-menu .secondary-controls label{min-width:120px}
  .mobile-menu .cabinet-controls{display:block!important;padding:12px!important}.mobile-menu .cabinet-controls #spin{display:none!important}
  .challenge-leaderboard,details{margin:12px 6px!important}.challenge-leaderboard{display:none}.challenge-leaderboard.mobile-visible{display:block}
 }
@@ -111,7 +111,7 @@ body{background:radial-gradient(ellipse at 50% -25%,#734821 0%,#24170f 40%,#0806
  #reels .reel-strip .cell{height:33.333333%!important;flex:0 0 33.333333%!important;min-height:0!important}
 }
 
-.mobile-bet-controls{display:none}
+.mobile-bet-controls{display:block}
 @media(max-width:650px){
  .mobile-bet-controls{display:flex!important;flex:0 0 auto;flex-direction:column;gap:4px;min-height:0;margin:3px 2px 0}
  .mobile-bet-controls .denom-selector{display:flex!important;align-items:center;gap:4px;margin:0!important;padding:3px!important;border-top-width:2px!important;min-height:0}
@@ -257,6 +257,6 @@ el('player-form').addEventListener('submit',event=>{event.preventDefault();const
 
 (function(){const openBtn=document.getElementById('mobile-menu-toggle'),closeBtn=document.getElementById('mobile-menu-close'),drawer=document.getElementById('mobile-menu');if(!openBtn||!drawer)return;function setOpen(open){drawer.classList.toggle('is-open',open);drawer.inert=!open&&window.matchMedia('(max-width:650px)').matches;openBtn.setAttribute('aria-expanded',String(open));if(open)closeBtn.focus();else openBtn.focus()}document.getElementById('mobile-spin')?.addEventListener('click',()=>document.getElementById('spin').click());openBtn.addEventListener('click',()=>setOpen(true));closeBtn.addEventListener('click',()=>setOpen(false));document.addEventListener('keydown',e=>{if(e.key==='Escape'&&drawer.classList.contains('is-open'))setOpen(false)})})();
 
-(function(){const controls=document.querySelector('.mobile-bet-controls'),drawer=document.getElementById('mobile-menu'),cabinet=drawer?.querySelector('.cabinet-controls');if(!controls||!cabinet)return;const denom=controls.querySelector('.denom-selector'),cluster=controls.querySelector('.control-cluster');const update=()=>{drawer.inert=window.matchMedia('(max-width:650px)').matches&&!drawer.classList.contains('is-open');if(window.matchMedia('(max-width:650px)').matches){if(denom.parentElement!==controls)controls.prepend(denom);if(cluster.parentElement!==controls)controls.append(cluster)}else{if(denom.parentElement!==controls)controls.prepend(denom);if(cluster.parentElement!==cabinet)cabinet.prepend(cluster)}};window.addEventListener('resize',update);update()})();
+
 showLeaderboard();resetRun();try{const saved=localStorage.getItem(playerIdentityKey);if(saved&&saved.length>=2&&saved.length<=20)playerName=saved}catch(e){}showPlayerGate();if(playerName){el('message').textContent='Welcome back, '+playerName+'! Your new $20 challenge is ready.';render();updateCabinet()}
 </script></html>
