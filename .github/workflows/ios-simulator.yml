@@ -30,11 +30,25 @@ jobs:
           cp -R build/device/Build/Products/Release-iphoneos/Last20GoldRush.app output/Payload/
           cd output
           zip -qry MyLast20Bucks-UNSIGNED.ipa Payload
+          unzip -t MyLast20Bucks-UNSIGNED.ipa
+          python3 - <<'PY'
+          from zipfile import ZipFile
+          p='MyLast20Bucks-UNSIGNED.ipa'
+          with ZipFile(p) as z:
+              names=z.namelist()
+              assert any(n.startswith('Payload/Last20GoldRush.app/') for n in names), 'IPA missing app bundle'
+              assert z.testzip() is None, 'IPA has corrupted entries'
+              print(f'Validated IPA: {len(names)} entries')
+          PY
+      - name: Publish IPA checksum
+        run: shasum -a 256 output/MyLast20Bucks-UNSIGNED.ipa > output/MyLast20Bucks-UNSIGNED.ipa.sha256
       - name: Upload unsigned IPA
         uses: actions/upload-artifact@v4
         with:
           name: MyLast20Bucks-unsigned-iphone-ipa
-          path: output/MyLast20Bucks-UNSIGNED.ipa
+          path: |
+            output/MyLast20Bucks-UNSIGNED.ipa
+            output/MyLast20Bucks-UNSIGNED.ipa.sha256
           retention-days: 30
       - name: Upload simulator app
         uses: actions/upload-artifact@v4
