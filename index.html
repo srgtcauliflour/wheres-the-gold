@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>My Last 20 Bucks — Free Play</title>
 <style>
 :root{font-family:system-ui,sans-serif;color:#ffe7a2;background:#130d09}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#65401a,#130d09 70%);min-height:100vh}.wrap{max-width:850px;margin:auto;padding:16px;text-align:center}h1{font-size:clamp(2rem,7vw,4rem);color:#ffca4b;text-shadow:0 4px #6d2c05;margin:12px 0}p{line-height:1.5}.panel{background:#24170f;border:4px solid #b78330;border-radius:18px;padding:14px;box-shadow:0 10px 40px #0009}.reels{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:18px auto}.cell{aspect-ratio:1/1;display:grid;place-items:center;font-size:clamp(26px,7vw,58px);background:linear-gradient(#fff5c9,#e5c98c);border:3px solid #9c6523;border-radius:10px;color:#301b08}.cell.win{outline:4px solid #fff35a;animation:glow .5s alternate infinite}.cell.gold{background:linear-gradient(#ffe94a,#ce8a07)}@keyframes glow{to{filter:brightness(1.5)}}button,select{font:inherit;border-radius:9px;padding:12px;background:#efb92d;color:#271200;border:2px solid #ffe2a0;font-weight:800;cursor:pointer}button:disabled{opacity:.5;cursor:wait}.controls{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;align-items:center}.stats{display:flex;justify-content:space-around;flex-wrap:wrap;gap:10px}.stats b{display:block;font-size:1.5rem;color:#fff}#message{min-height:45px;font-weight:bold}dialog{background:#21140b;color:#ffdf91;border:4px solid #c59437;border-radius:18px;max-width:min(95vw,680px);text-align:center}dialog::backdrop{background:#000b}.choices{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}.choices button{min-width:90px}details{text-align:left;margin:20px auto;max-width:700px}small{color:#c8b89b}a{color:#ffe082}
@@ -130,6 +130,33 @@ body{background:radial-gradient(ellipse at 50% -25%,#734821 0%,#24170f 40%,#0806
  .mobile-bet-controls{display:contents!important}
  .mobile-bet-controls .denom-selector{display:block}
  .mobile-bet-controls .control-cluster{display:flex}
+}
+
+/* v0.1.4: true edge-to-edge iPhone cabinet, with predictable reel sizing. */
+@media(max-width:650px){
+ :root{background:#130d09}
+ html,body{position:fixed!important;inset:0!important;width:100%!important;height:100%!important;min-height:0!important;overflow:hidden!important;margin:0!important}
+ .wrap{position:fixed!important;inset:0!important;width:100%!important;max-width:none!important;height:100%!important;min-height:0!important;margin:0!important;padding:0 5px max(5px,env(safe-area-inset-bottom,0px))!important;overflow:hidden!important;display:flex!important;flex-direction:column!important}
+ .mobile-toolbar{flex:0 0 auto!important;min-height:0!important;margin:0!important;padding:calc(env(safe-area-inset-top,0px) + 5px) 8px 6px!important}
+ .game-cabinet{flex:1 1 0%!important;min-height:0!important;max-height:none!important;margin:3px 0 0!important;display:flex!important;flex-direction:column!important;overflow:hidden!important}
+ .cabinet-stats{flex:0 0 auto!important}
+ .reel-scene{flex:1 1 0%!important;min-height:140px!important;max-height:none!important;display:flex!important;flex-direction:column!important;overflow:hidden!important}
+ .reel-machine{flex:1 1 0%!important;min-height:100px!important;max-height:none!important;width:100%!important;position:relative!important;display:block!important}
+ .reel-display{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;display:block!important;overflow:hidden!important}
+ #reels.reels{width:100%!important;height:100%!important;display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;grid-template-rows:minmax(0,1fr)!important;gap:2px!important;align-items:stretch!important;overflow:hidden!important}
+ #reels .reel-column{height:100%!important;min-height:0!important;max-height:none!important}
+ #reels .reel-strip{height:100%!important;min-height:0!important}
+ #reels .reel-strip .cell{height:33.333333%!important;min-height:0!important;flex:0 0 33.333333%!important}
+ #feature-banner{flex:0 0 auto!important;margin:1px auto!important}
+ #message{flex:0 0 auto!important;max-height:32px!important;margin:2px 2px!important}
+ .mobile-bet-controls{flex:0 0 auto!important;gap:2px!important;margin:2px 0 0!important}
+ .mobile-bet-controls .denom-selector{padding:2px!important}
+ .mobile-bet-controls .denom-button{min-height:29px!important;padding:2px 1px!important}
+ .mobile-bet-controls .control-cluster{padding:1px 3px!important}
+ .mobile-bet-controls select{min-height:30px!important}
+ #mobile-spin{flex:0 0 auto!important;height:clamp(42px,6.5dvh,58px)!important;min-height:42px!important;margin:3px auto 6px!important}
+ .cabinet-footer{flex:0 0 auto!important;padding:1px!important}
+ .wrap>p,.wrap>details,.wrap>.challenge-leaderboard{display:none!important}
 }
 </style>
 <main class="wrap"><nav class="mobile-toolbar" aria-label="Game navigation"><span class="mobile-brand">MY LAST 20 BUCKS</span><button type="button" id="mobile-menu-toggle" aria-controls="mobile-menu" aria-expanded="false">☰ MENU</button></nav><header class="game-header"><div class="brand-title"><span class="brand-kicker">THIS IS MY LAST $20 — CAN I GET RICH?</span><h1>MY LAST <em>20 BUCKS</em></h1><span class="brand-caption">START WITH $20 • CHASE YOUR PERSONAL BEST</span></div></header>
