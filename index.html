@@ -61,6 +61,44 @@ body{background:radial-gradient(ellipse at 50% -25%,#734821 0%,#24170f 40%,#0806
  .mobile-menu .cabinet-controls{display:block!important;padding:12px!important}.mobile-menu .cabinet-controls #spin{display:none!important}
  .challenge-leaderboard,details{margin:12px 6px!important}.challenge-leaderboard{display:none}.challenge-leaderboard.mobile-visible{display:block}
 }
+
+/* Full-viewport iPhone app layout: no document or drawer scrolling. */
+@media(max-width:650px){
+ html,body{width:100%;height:100%;height:100dvh;overflow:hidden!important;overscroll-behavior:none}
+ .wrap{height:100%;height:100dvh;min-height:0!important;overflow:hidden!important;padding:0 4px env(safe-area-inset-bottom,0px)!important;display:flex;flex-direction:column}
+ .mobile-toolbar{position:relative!important;flex:0 0 auto;padding-top:calc(env(safe-area-inset-top,0px) + 5px)!important;padding-bottom:5px!important}
+ .game-cabinet{flex:1 1 auto;min-height:0!important;display:flex;flex-direction:column;overflow:hidden!important;margin:3px 0 0!important;padding:3px!important}
+ .cabinet-stats{flex:0 0 auto;margin-bottom:3px!important}
+ .reel-scene{flex:1 1 auto;min-height:0!important;display:flex;flex-direction:column;overflow:hidden!important}
+ #feature-banner{flex:0 0 auto}
+ .reel-machine{flex:1 1 auto;min-height:0!important;display:flex!important;align-items:stretch!important}
+ .reel-display{flex:1 1 auto;min-height:0!important;display:flex!important;overflow:hidden!important}
+ .reel-display .reels{flex:1 1 auto;min-height:0!important;height:100%!important;margin:0!important;align-items:stretch!important}
+ .reel-column{height:100%!important;min-height:0!important}
+ .reel-strip{height:100%!important}
+ .reel-strip .cell{height:33.333333%!important;min-height:0!important}
+ #message{flex:0 0 auto;min-height:0!important;max-height:38px;overflow:hidden!important;margin:3px 2px!important}
+ #mobile-spin{flex:0 0 auto;min-height:0!important;height:clamp(48px,9dvh,72px)!important;margin:4px auto 7px!important}
+ .cabinet-footer{flex:0 0 auto}
+ .challenge-leaderboard,details{display:none!important}
+ .mobile-menu{height:100%!important;height:100dvh!important;overflow:hidden!important;display:none;box-sizing:border-box;padding:calc(env(safe-area-inset-top,0px) + 8px) 10px calc(env(safe-area-inset-bottom,0px) + 8px)!important}
+ .mobile-menu.is-open{display:flex!important;flex-direction:column;justify-content:space-between;gap:4px}
+ .mobile-menu-heading{margin:0!important;flex:0 0 auto}
+ .mobile-menu .denom-selector{flex:0 0 auto;margin:0!important;padding:6px 4px!important}
+ .mobile-menu .denom-options{gap:3px!important}
+ .mobile-menu .denom-button{min-height:35px!important;padding:3px!important}
+ .mobile-menu .cabinet-controls{flex:1 1 auto;min-height:0!important;margin:0!important;padding:7px!important;display:flex!important;flex-direction:column;justify-content:space-evenly!important;gap:6px!important}
+ .mobile-menu .control-cluster,.mobile-menu .secondary-controls{gap:7px!important}
+ .mobile-menu select{max-width:100%;min-height:36px}
+}
+@media(max-width:650px) and (max-height:650px){
+ .mobile-brand{font-size:13px!important}.mobile-toolbar{padding-top:calc(env(safe-area-inset-top,0px) + 2px)!important}
+ .cabinet-stat{font-size:9px!important}.cabinet-stat b{font-size:13px!important}
+ #feature-banner{display:none!important}#message{font-size:11px!important;max-height:27px}
+ #mobile-spin{height:46px!important;margin:2px auto 4px!important}
+ .mobile-menu .denom-button{min-height:30px!important}
+}
+@media(min-width:651px){.mobile-menu{display:contents!important}.mobile-menu-heading{display:none!important}}
 </style>
 <main class="wrap"><nav class="mobile-toolbar" aria-label="Game navigation"><span class="mobile-brand">MY LAST 20 BUCKS</span><button type="button" id="mobile-menu-toggle" aria-controls="mobile-menu" aria-expanded="false">☰ MENU</button></nav><header class="game-header"><div class="brand-title"><span class="brand-kicker">THIS IS MY LAST $20 — CAN I GET RICH?</span><h1>MY LAST <em>20 BUCKS</em></h1><span class="brand-caption">START WITH $20 • CHASE YOUR PERSONAL BEST</span></div></header>
 <section class="panel game-cabinet"><div class="cabinet-stats"><div class="cabinet-stat">BALANCE <b id="credits">$20.00</b></div><div class="cabinet-stat">TOTAL BET <b id="total-bet">$0.25</b></div><div class="cabinet-stat">WIN <b id="win">$0.00</b></div><div class="cabinet-stat extra-stat">FREE GAMES <b id="free">0</b></div></div>
