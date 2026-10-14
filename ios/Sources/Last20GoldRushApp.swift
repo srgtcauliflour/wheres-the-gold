@@ -7,7 +7,8 @@ struct Last20GoldRushApp: App {
     var body: some Scene {
         WindowGroup {
             GameScreen()
-                .ignoresSafeArea()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .ignoresSafeArea(.container, edges: .all)
                 .preferredColorScheme(.dark)
         }
     }
@@ -18,7 +19,8 @@ struct GameScreen: UIViewRepresentable {
         let configuration = WKWebViewConfiguration()
         configuration.defaultWebpagePreferences.allowsContentJavaScript = true
         configuration.allowsInlineMediaPlayback = true
-        let webView = WKWebView(frame: .zero, configuration: configuration)
+        let webView = WKWebView(frame: UIScreen.main.bounds, configuration: configuration)
+        webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         webView.isOpaque = false
         webView.backgroundColor = UIColor(red: 0.08, green: 0.04, blue: 0.03, alpha: 1)
         webView.scrollView.contentInsetAdjustmentBehavior = .never
