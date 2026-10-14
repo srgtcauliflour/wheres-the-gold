@@ -23,6 +23,9 @@ struct GameScreen: UIViewRepresentable {
         webView.backgroundColor = UIColor(red: 0.08, green: 0.04, blue: 0.03, alpha: 1)
         webView.scrollView.contentInsetAdjustmentBehavior = .never
         webView.scrollView.bounces = false
+        webView.scrollView.isScrollEnabled = false
+        webView.scrollView.contentInset = .zero
+        webView.scrollView.scrollIndicatorInsets = .zero
         webView.navigationDelegate = context.coordinator
         webView.configuration.userContentController.add(context.coordinator, name: "nativeHaptic")
         if let url = Bundle.main.url(forResource: "index", withExtension: "html", subdirectory: "Web") {
