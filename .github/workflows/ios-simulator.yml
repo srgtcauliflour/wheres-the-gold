@@ -7,6 +7,8 @@ on:
       - 'index.html'
       - 'assets/**'
       - '.github/workflows/ios-simulator.yml'
+permissions:
+  contents: write
 jobs:
   build:
     runs-on: macos-latest
@@ -50,6 +52,17 @@ jobs:
             output/MyLast20Bucks-UNSIGNED.ipa
             output/MyLast20Bucks-UNSIGNED.ipa.sha256
           retention-days: 30
+      - name: Publish directly downloadable IPA release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "ios-build-${{ github.run_number }}" \
+            output/MyLast20Bucks-UNSIGNED.ipa \
+            output/MyLast20Bucks-UNSIGNED.ipa.sha256 \
+            --title "My Last 20 Bucks iOS build ${{ github.run_number }}" \
+            --notes "Unsigned iPhone IPA for later signing. Download the .ipa asset directly rather than extracting the GitHub Actions artifact ZIP. Not installable until signed with an Apple provisioning profile." \
+            --prerelease \
+            --target "${{ github.sha }}"
       - name: Upload simulator app
         uses: actions/upload-artifact@v4
         with:
